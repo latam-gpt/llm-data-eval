@@ -1,2 +1,6 @@
-vllm
 datasets
+evaluate
+numpy
+scikit-learn
+transformers
+vllm
