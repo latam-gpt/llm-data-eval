@@ -1,19 +1,20 @@
 import os
 import torch
+import argparse
 from multiprocess import set_start_method
 from tqdm import tqdm
 
 from datasets import load_dataset, concatenate_datasets
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-MODEL_NAME = "/workspace1/ouhenio/history-bert/final"
-
-def process_shard(file_path, tokenizer, model):
+# since our datasets are too big, we process them shard by shard
+def process_shard(file_path, tokenizer, model, batch_size, num_gpus):
     shard_dataset = load_dataset("arrow", data_files=[file_path])
 
     def compute_scores(batch, rank=None):
         device = f"cuda:{rank}"
         model.to(device)
+        # 'texto' column is hardcoded, should be changed in the future
         inputs = tokenizer(batch["texto"], return_tensors="pt", padding="longest", truncation=True).to(device)
         with torch.no_grad():
             outputs = model(**inputs)
@@ -26,44 +27,47 @@ def process_shard(file_path, tokenizer, model):
     processed_shard = shard_dataset.map(
         compute_scores,
         batched=True,
-        batch_size=4096,
+        batch_size=batch_size,
         with_rank=True,
-        num_proc=3
+        num_proc=num_gpus
     )
     return processed_shard
 
-def main():
-    tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-    model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, torch_dtype=torch.bfloat16)
+def main(model_name, dataset, output_dir, num_gpus, batch_size):
+    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    model = AutoModelForSequenceClassification.from_pretrained(model_name, torch_dtype=torch.bfloat16)
 
-    arrow_folder = "/workspace1/ouhenio/es_clean_shuffled"
-    files = [os.path.join(arrow_folder, file) for file in os.listdir(arrow_folder) if file.endswith('.arrow')]
-    files.sort()  # sort files to maintain order
+    files = [os.path.join(dataset, file) for file in os.listdir(dataset) if file.endswith('.arrow')]
+    files.sort()
 
-    processed_dir = "/workspace1/ouhenio/scored_es_clean_shuffled"
-
-    # load previously processed shards
-    processed_files = [os.path.join(processed_dir, file) for file in os.listdir(processed_dir) if file.endswith('.arrow')]
+    processed_files = [os.path.join(output_dir, file) for file in os.listdir(output_dir) if file.endswith('.arrow')]
     processed_files_set = set(processed_files)
 
     all_processed_shards = []
 
     for file_path in tqdm(files, desc="Processing shards"):
         shard_name = os.path.basename(file_path)
-        processed_shard_path = os.path.join(processed_dir, shard_name)
+        processed_shard_path = os.path.join(output_dir, shard_name)
         
-        # skip processing processed shards
         if processed_shard_path in processed_files_set:
             continue
         
-        processed_shard = process_shard(file_path, tokenizer, model)
+        processed_shard = process_shard(file_path, tokenizer, model, batch_size, num_gpus)
         processed_shard.save_to_disk(processed_shard_path)
         all_processed_shards.append(processed_shard)
 
     if all_processed_shards:
         final_dataset = concatenate_datasets(all_processed_shards)
-        final_dataset.save_to_disk(processed_dir)
+        final_dataset.save_to_disk(output_dir)
 
 if __name__ == "__main__":
-    set_start_method("spawn")  # required to use multiple GPUs
-    main()
+    parser = argparse.ArgumentParser(description="Process dataset shards.")
+    parser.add_argument('--model_name', type=str, required=True, help='Path to the embedding model directory.')
+    parser.add_argument('--dataset', type=str, required=True, help='Dataset folder.')
+    parser.add_argument('--output_dir', type=str, required=True, help='Output folder.')
+    parser.add_argument('--num_gpus', type=int, required=True, help='Number of GPUs to use.')
+    parser.add_argument('--batch_size', type=int, required=True, default=4096, help='Batch size for processing.')
+    args = parser.parse_args()
+
+    set_start_method("spawn") # required to run dataset map with multiple gpus
+    main(args.model_name, args.dataset, args.output_dir, args.num_gpus, args.batch_size)
