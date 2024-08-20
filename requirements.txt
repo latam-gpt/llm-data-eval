@@ -1,6 +1,8 @@
+accelerate
 datasets
 evaluate
 numpy
 scikit-learn
 transformers
 vllm
+wandb
