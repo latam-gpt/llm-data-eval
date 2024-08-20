@@ -27,6 +27,11 @@ conda activate llm-data-eval
 
 - `run_bert_eval.py`: Runs the classifier over the entire dataset.
 
+```bash
+python run_bert_eval.py --model_path /path/to/pre-trained/bert \
+    --dataset /path/to/dataset --output_dir /path/to/output
+```
+
 ## References
 
 - [FineWeb](https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1)

@@ -33,9 +33,9 @@ def process_shard(file_path, tokenizer, model, batch_size, num_gpus):
     )
     return processed_shard
 
-def main(model_name, dataset, output_dir, num_gpus, batch_size):
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModelForSequenceClassification.from_pretrained(model_name, torch_dtype=torch.bfloat16)
+def main(model_path, dataset, output_dir, num_gpus, batch_size):
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    model = AutoModelForSequenceClassification.from_pretrained(model_path, torch_dtype=torch.bfloat16)
 
     files = [os.path.join(dataset, file) for file in os.listdir(dataset) if file.endswith('.arrow')]
     files.sort()
@@ -62,7 +62,7 @@ def main(model_name, dataset, output_dir, num_gpus, batch_size):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process dataset shards.")
-    parser.add_argument('--model_name', type=str, required=True, help='Path to the embedding model directory.')
+    parser.add_argument('--model_path', type=str, required=True, help='Path to the embedding model directory.')
     parser.add_argument('--dataset', type=str, required=True, help='Dataset folder.')
     parser.add_argument('--output_dir', type=str, required=True, help='Output folder.')
     parser.add_argument('--num_gpus', type=int, required=True, help='Number of GPUs to use.')
@@ -70,4 +70,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     set_start_method("spawn") # required to run dataset map with multiple gpus
-    main(args.model_name, args.dataset, args.output_dir, args.num_gpus, args.batch_size)
+    main(args.model_path, args.dataset, args.output_dir, args.num_gpus, args.batch_size)
