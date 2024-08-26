@@ -5,7 +5,6 @@ import re
 
 import evaluate
 import numpy as np
-import wandb
 from transformers import (
     AutoTokenizer,
     DataCollatorWithPadding,
@@ -112,7 +111,7 @@ def main(args):
         metric_for_best_model="f1_macro",
         greater_is_better=True,
         bf16=True,
-        report_to="wandb",
+        report_to="wandb" if args.use_wandb else "none",
     )
 
     trainer = Trainer(
@@ -129,8 +128,6 @@ def main(args):
     trainer.save_model(os.path.join(args.checkpoint_dir, "final"))
 
 if __name__ == "__main__":
-    wandb.init(project="bert_history_eval", entity="ouhenio")
-
     parser = argparse.ArgumentParser(description="Configure training settings")
     parser.add_argument("--checkpoint_dir", type=str, default="/workspace1/ouhenio/history-bert", help="Directory to save model checkpoints")
     parser.add_argument("--base_model", type=str, default="Snowflake/snowflake-arctic-embed-m", help="Model identifier for Hugging Face Transformers")
@@ -138,6 +135,14 @@ if __name__ == "__main__":
     parser.add_argument("--train_batch_size", type=int, default=2048, help="Batch size for training")
     parser.add_argument("--eval_batch_size", type=int, default=1024, help="Batch size for evaluation")
     parser.add_argument("--cache_dir", type=str, default="./cache", help="Directory to store cache files")
+    parser.add_argument("--use_wandb", action="store_true", help="Use Weights & Biases for logging")
+    parser.add_argument("--wandb_project", type=str, default="bert_history_eval", help="Weights & Biases project name")
+    parser.add_argument("--wandb_entity", type=str, default="ouhenio", help="Weights & Biases entity name")
 
     args = parser.parse_args()
+
+    if args.use_wandb:
+        import wandb
+        wandb.init(project=args.wandb_project, entity=args.wandb_entity)
+
     main(args)
