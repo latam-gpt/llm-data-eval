@@ -83,6 +83,16 @@ python run_bert_eval.py \
 
 After the rating is done, the corpus will be saved with two new columns `score` and `int_score`, where the first is a continual value, and the second the rounded result, both ranging from 1 to 5. This can be used to filter by quality (5 being the highest quality).
 
+To help in the filtering process, we added the `filter_results.py` script:
+
+```bash
+python utils/filter_results.py \
+--dataset_path=path/to/my/dataset \
+--score=3 \
+--num_proc=12 \
+--output_path=path/to/store/filtered_dataset
+```
+
 ## References
 
 - This pipeline is a custom implementation on the approach used in [FineWeb-Edu](https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1).
