@@ -11,6 +11,7 @@ logging.basicConfig(
 
 PATTERN = r"PUNTUACIÓN EDUCATIVA[:\s]*([\d\.]+)"
 
+
 def load_base_prompt(prompt_path):
     with open(prompt_path) as f:
         return f.read()
@@ -19,9 +20,11 @@ def load_base_prompt(prompt_path):
 def insert_prompt(base_prompt: str, prompt_to_insert: str):
     return base_prompt.replace("<EJEMPLO>", prompt_to_insert)
 
+
 def update_text(example, base_prompt):
     example["eval_prompt"] = insert_prompt(base_prompt, example["texto"])
     return example
+
 
 def process_batch(llm, batch, sampling_params):
     outputs = llm.generate(list(batch["eval_prompt"]), sampling_params)
