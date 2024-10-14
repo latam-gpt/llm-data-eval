@@ -101,11 +101,11 @@ def main(args):
         output_dir=args.checkpoint_dir,
         eval_strategy="steps",
         save_strategy="steps",
-        eval_steps=600,
-        save_steps=600,
-        logging_steps=5,
-        learning_rate=3e-4,
-        num_train_epochs=60,
+        eval_steps=args.eval_steps,
+        save_steps=args.save_steps,
+        logging_steps=args.logging_steps,
+        learning_rate=args.learning_rate,
+        num_train_epochs=args.num_train_epochs,
         seed=0,
         per_device_train_batch_size=args.train_batch_size,
         per_device_eval_batch_size=args.eval_batch_size,
@@ -135,7 +135,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--checkpoint_dir",
         type=str,
-        default="/workspace1/ouhenio/history-bert",
+        required=True,
         help="Directory to save model checkpoints",
     )
     parser.add_argument(
@@ -168,14 +168,42 @@ if __name__ == "__main__":
     parser.add_argument(
         "--wandb_project",
         type=str,
-        default="bert_eval",
         help="Weights & Biases project name",
     )
     parser.add_argument(
         "--wandb_entity",
         type=str,
-        default="ouhenio",
         help="Weights & Biases entity name",
+    )
+    parser.add_argument(
+        "--num_train_epochs",
+        type=int,
+        default=60,
+        help="Number of training epochs",
+    )
+    parser.add_argument(
+        "--eval_steps",
+        type=int,
+        default=600,
+        help="Number of steps between evaluations",
+    )
+    parser.add_argument(
+        "--save_steps",
+        type=int,
+        default=600,
+        help="Number of steps between model saves",
+    )
+    parser.add_argument(
+        "--logging_steps",
+        type=int,
+        default=5,
+        help="Number of steps between logging",
+    )
+    parser.add_argument(
+        "--learning_rate",
+        type=float,
+        default=3e-4,
+        help="Learning rate for training",
     )
 
     args = parser.parse_args()
@@ -183,6 +211,10 @@ if __name__ == "__main__":
     if args.use_wandb:
         import wandb
 
+        if not args.wandb_project or not args.wandb_entity:
+            raise ValueError(
+                "When using wandb, both --wandb_project and --wandb_entity must be provided."
+            )
         wandb.init(project=args.wandb_project, entity=args.wandb_entity)
 
     main(args)
