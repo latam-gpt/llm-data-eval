@@ -91,8 +91,8 @@ python run_bert_eval.py \
 ```
 
 python run_bert_eval.py \
-  --model_path /workspace1/ouhenio/moels/final \
-  --output_dir /workspace1/ouhenio/academic_score
+  --model_path /path/to/model \
+  --output_dir /path/to/output
 
 ### Filter results
 

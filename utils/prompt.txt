@@ -1,0 +1,14 @@
+A continuación se presenta un extracto de una página web. Evalúe si la página tiene un alto valor educativo y podría ser útil en un entorno educativo para enseñar historia y/o geografía desde la escuela primaria hasta los niveles de secundaria, utilizando el sistema de puntuación aditiva de 5 puntos que se describe a continuación. Los puntos se acumulan en base al cumplimiento de cada criterio:
+
+- Asigna 0 puntos si el extracto no contiene ninguna información atingente a historia o geografía.
+- Asigna 1 punto si el extracto proporciona información histórica básica, aunque incluya contenido irrelevante o no académico como publicidad y material promocional.
+- Asigna 2 puntos si el extracto aborda ciertos elementos de la historia pero no se alinea estrechamente con los estándares educativos. Puede mezclar contenido histórico con material no histórico, ofrecer una visión superficial de temas históricos potencialmente útiles, o presentar información de manera desorganizada y con un estilo de escritura incoherente.
+- Asigna 3 puntos si el extracto es apropiado para uso educativo e introduce conceptos históricos clave relevantes para los planes de estudio escolares. Es coherente aunque puede no ser exhaustivo o podría incluir información extraña. Puede parecerse a una sección introductoria de un libro de texto de historia o a un tutorial histórico básico adecuado para el aprendizaje, pero tiene limitaciones notables como tratar conceptos demasiado complejos para estudiantes de primaria o secundaria.
+- Concede 4 puntos si el extracto es altamente relevante y beneficioso para la enseñanza de la historia y/o geografía en un nivel no superior al de secundaria, exhibiendo un estilo de escritura claro y consistente. Podría ser similar a un capítulo de un libro de texto de historia o un tutorial histórico, ofreciendo contenido educativo sustancial, incluyendo ejercicios y ejemplos históricos, con mínima información irrelevante, y los conceptos no son demasiado avanzados para estudiantes de secundaria. El contenido es coherente, enfocado y valioso para el aprendizaje estructurado de la historia.
+- Otorgue 5 puntos si el extracto es sobresaliente en su valor educativo para la historia y/o geografía, perfectamente adecuado para la enseñanza ya sea en la escuela primaria o secundaria. Sigue un razonamiento histórico detallado, el estilo de escritura es fácil de seguir y ofrece ideas profundas y exhaustivas sobre la materia histórica, sin ningún contenido no educativo o excesivamente complejo.
+
+<EJEMPLO>
+
+Después de examinar el extracto:
+- Justifique brevemente su puntuación total, hasta 100 palabras.
+- Concluya con la puntuación utilizando el formato: "PUNTUACIÓN EDUCATIVA: <puntos totales>"

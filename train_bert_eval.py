@@ -15,7 +15,6 @@ from transformers import (
 from sklearn.metrics import classification_report, confusion_matrix
 from datasets import Dataset, ClassLabel
 
-
 def compute_metrics(eval_pred):
     precision_metric = evaluate.load("precision")
     recall_metric = evaluate.load("recall")
@@ -46,7 +45,6 @@ def compute_metrics(eval_pred):
         "accuracy": accuracy,
     }
 
-
 def main(args):
     with open(args.json_file, "r", encoding="utf-8") as json_file:
         dataset = json.load(json_file)
@@ -76,7 +74,6 @@ def main(args):
         batch = tokenizer(examples["prompt"], truncation=True)
         batch["labels"] = np.float32(examples["score"])
         return batch
-
     preprocess_cache_path = os.path.join(args.cache_dir, "preprocess.cache")
     dataset = dataset.map(
         preprocess,

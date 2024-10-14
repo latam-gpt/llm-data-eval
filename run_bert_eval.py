@@ -80,7 +80,6 @@ def main(
         for file_path in tqdm(files, desc="Processing shards"):
             shard_name = os.path.basename(file_path)
             processed_shard_path = os.path.join(output_dir, shard_name)
-
             if processed_shard_path in processed_files_set:
                 logging.info(f"Shard already processed: {shard_name}")
                 all_processed_shards.append(processed_shard_path)
