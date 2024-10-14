@@ -1,6 +1,7 @@
 .env
 wandb
 test.ipynb
+.ruff_cache
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
