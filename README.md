@@ -2,7 +2,18 @@
 
 We have limited compute, and too much data.
 
-This repo presents a methodogy that allows us to build a smaller but higher quality NLP datasets from a big corpus.
+This repo presents a methodology that allows us to build a smaller but higher quality NLP datasets from a big corpus using LLMs.
+
+## Index
+
+1. [Filtering data at scale](#filtering-data-at-scale)
+2. [Installation](#installation)
+3. [Pipeline Overview](#pipeline-overview)
+  1. [GPT-based rating](#gpt-based-rating)
+  2. [Train encoder](#train-encoder)
+  3. [Evaluate corpus with encoder](#evaluate-corpus-with-encoder)
+4. [Filter results](#filter-results)
+5. [References](#references)
 
 ## Filtering data at scale
 
@@ -28,14 +39,14 @@ The whole pipeline is a three step process, each contained in its own script.
 
 The entire logic of this step is contained in `rate_with_llms.py`.
 
-The script rates a small subsection of our dataset using an LLM. The dataset is given a base prompt to guide its evaluation, see the reference prompt in `utils/prompts.txt`.
+The script rates a small subsection of our dataset using an LLM. The dataset is given a base prompt to guide its evaluation, see the reference prompt in `utils/base_prompt.txt`.
 
 Here is an usage example:
 
 ```bash
-python score_dataset.py \
+python rate_with_llms.py \
   --prompt_path prompts/base_prompt.txt \
-  --dataset_path data/es_clean_shuffled/data-00000-of-00512.arrow \
+  --dataset_path data/ \
   --model_path meta-llama/Meta-Llama-3.1-70B-Instruct \
   --download_dir /workspace1/models \
   --output_path results/generated_texts.json \
@@ -78,6 +89,10 @@ python run_bert_eval.py \
   --dataset /path/to/dataset \
   --output_dir /path/to/output
 ```
+
+python run_bert_eval.py \
+  --model_path /workspace1/ouhenio/moels/final \
+  --output_dir /workspace1/ouhenio/academic_score
 
 ### Filter results
 
