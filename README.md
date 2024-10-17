@@ -90,10 +90,6 @@ python run_bert_eval.py \
   --output_dir /path/to/output
 ```
 
-python run_bert_eval.py \
-  --model_path /path/to/model \
-  --output_dir /path/to/output
-
 ### Filter results
 
 After the rating is done, the corpus will be saved with two new columns `score` and `int_score`, where the first is a continual value, and the second the rounded result, both ranging from 1 to 5. This can be used to filter by quality (5 being the highest quality).
