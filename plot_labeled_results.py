@@ -51,6 +51,7 @@ def plot_multilabel_results(args, data=None, dataset_name=None):
 
     # Helper function to sort, calculate percentages, and wrap labels
     def sort_and_calculate_percentages(counter, top_k=None):
+        # To address some typo in the labeler
         if 'E' in counter:
             del counter['E']
         
@@ -122,6 +123,9 @@ def main(args):
         record_idx = 0
 
         for file_path in files:
+            # To avoid duplicating datasets since those with toxicity filters have same content 
+            if "toxicity" in file_path:
+                continue
             with open(file_path, "r", encoding="utf-8") as file:
                 data = json.load(file)
                 for record in data.values():
