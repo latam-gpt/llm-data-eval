@@ -5,12 +5,10 @@ import logging
 from datasets import Dataset
 from vllm import LLM, SamplingParams
 
-import pdb
-import glob
-import os
 
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s"
+    level=logging.INFO,
+    format="%(asctime)s - %(levelname)s - [%(filename)s:%(lineno)d] - %(message)s",
 )
 
 PATTERN_DOMAIN = r"DOMINIO[:\s]*(\w+(?:\s\w+)*(?:,\s*\w+(?:\s\w+)*)*)\n"
@@ -35,7 +33,7 @@ def process_batch(llm, batch, sampling_params):
     print(f"len(batch['eval_prompt']): {len(batch['eval_prompt'])}")
     outputs = llm.generate(list(batch["eval_prompt"]), sampling_params)
     results = {}
-    
+
     for idx, (vllm_output, prompt) in enumerate(zip(outputs, list(batch["texto"]))):
         generated_text = vllm_output.outputs[0].text
         match_domain = re.search(PATTERN_DOMAIN, generated_text)
@@ -43,13 +41,13 @@ def process_batch(llm, batch, sampling_params):
 
         if match_domain and match_usecases:
             results[idx] = {
-                #"Prompt": prompt,
+                # "Prompt": prompt,
                 "domains": match_domain.group(1),
                 "use_cases": match_usecases.group(1),
             }
         else:
             results[idx] = {
-                #"Prompt": prompt,
+                # "Prompt": prompt,
                 "domains": None,
                 "use_cases": None,
             }
@@ -79,7 +77,7 @@ def main(args):
             enable_prefix_caching=True,
             max_model_len=args.max_model_len,
         )
-        
+
         results_dict = {}
         curr_idx = 0
         while len(dataset) > curr_idx + args.batch_size:
@@ -94,7 +92,7 @@ def main(args):
 
             curr_idx += args.batch_size
             logging.info(f"Processed {curr_idx} examples")
-            
+
         logging.info(f"Processing complete. Results saved to {args.output_path}")
 
     except Exception as e:
@@ -143,10 +141,13 @@ if __name__ == "__main__":
         "--batch_size", type=int, default=500, help="Rating batch size."
     )
     parser.add_argument(
-        "--max_model_len", type=int, default=10432, help="Max sequence length that fits the KV cache."
+        "--max_model_len",
+        type=int,
+        default=10432,
+        help="Max sequence length that fits the KV cache.",
     )
 
     args = parser.parse_args()
     print(args)
-    
+
     main(args)

@@ -32,11 +32,11 @@ for dataset_path in "${datasets[@]}"; do
     dataset_name=$(basename "$(dirname "$dataset_path")") # e.g., "conicet"
 
     # Replace underscores with hyphens in dataset_name
-    dataset_name=$(echo "$dataset_name" | tr '_' '-')  
+    dataset_name=$(echo "$dataset_name" | tr '_' '-')
 
     # Extract model name
     model_name=$(basename $model_path)
-    
+
     # Define the output file name
     output_path="${output_dir}/usecasesdomains_${dataset_name}_${model_name}.json"
 
@@ -51,7 +51,7 @@ for dataset_path in "${datasets[@]}"; do
         --tensor_parallel_size 2   \
         --batch_size 100   \
         --text_column texto
-    
+
     # Check if the script executed successfully
     if [ $? -ne 0 ]; then
         echo "Error processing $dataset_path. Skipping..."

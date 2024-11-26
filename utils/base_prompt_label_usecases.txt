@@ -43,8 +43,8 @@ Dominio: Tecnología
 - Soporte Técnico: Solucionar problemas de software, hardware y redes.
 - Educación en IA: Capacitar a usuarios sobre aplicaciones de aprendizaje automático e inteligencia artificial.
 
-Formato esperado: 
-DOMINIO: lista de dominios separados por comas (p. ej., "Salud, Educación, Legal"). 
+Formato esperado:
+DOMINIO: lista de dominios separados por comas (p. ej., "Salud, Educación, Legal").
 CASOS DE USO: lista de casos de uso separados por comas (p. ej., "Telemedicina, Soporte para Salud Mental, Educación Médica").
 
 Contenido a etiquetar:

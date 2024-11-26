@@ -19,14 +19,14 @@ for dataset_path in "${datasets[@]}"; do
     # dataset_name=$(basename "$(dirname "$dataset_path")") # e.g., "conicet"
 
     # # Replace underscores with hyphens in dataset_name
-    # dataset_name=$(echo "$dataset_name" | tr '_' '-')  
+    # dataset_name=$(echo "$dataset_name" | tr '_' '-')
 
     # Run the Python script with the dataset_path and output_path
     echo "Processing dataset: $dataset_path -> $output_dir"
     python plot_labeled_results.py \
         --result_path "$dataset_path" \
-        --output_dir "$output_dir" 
-    
+        --output_dir "$output_dir"
+
     # Check if the script executed successfully
     if [ $? -ne 0 ]; then
         echo "Error processing $dataset_path. Skipping..."
