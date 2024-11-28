@@ -1,26 +1,37 @@
-
 #!/bin/bash
 
-# Define the base directory where the files are located
-base_dir="/workspace1/omarflorez/code/llm-data-eval/results"
+# Define usage function
+usage() {
+    echo "Usage: $0 -b BASE_DIR -o OUTPUT_DIR"
+    echo
+    echo "Options:"
+    echo "  -b BASE_DIR   Base directory where the result files are located"
+    echo "  -o OUTPUT_DIR Output directory where the figures will be saved"
+    exit 1
+}
 
-# Find all files that contains results
+# Parse command-line arguments
+while getopts ":b:o:" opt; do
+    case $opt in
+        b) base_dir="$OPTARG" ;;
+        o) output_dir="$OPTARG" ;;
+        *) usage ;;
+    esac
+done
+
+# Check required arguments
+if [[ -z "$base_dir" || -z "$output_dir" ]]; then
+    usage
+fi
+
+# Find all files that contain results
 datasets=($(find "$base_dir" -type f -name "usecasesdomains_*.json"))
-
-# Output directory
-output_dir="/workspace1/omarflorez/code/llm-data-eval/results/figures"
 
 # Ensure the output directory exists
 mkdir -p "$output_dir"
 
 # Iterate over the dataset files
 for dataset_path in "${datasets[@]}"; do
-    # # Extract the dataset name from the file path
-    # dataset_name=$(basename "$(dirname "$dataset_path")") # e.g., "conicet"
-
-    # # Replace underscores with hyphens in dataset_name
-    # dataset_name=$(echo "$dataset_name" | tr '_' '-')
-
     # Run the Python script with the dataset_path and output_path
     echo "Processing dataset: $dataset_path -> $output_dir"
     python plot_labeled_results.py \
