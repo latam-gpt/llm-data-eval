@@ -34,7 +34,7 @@ mkdir -p "$output_dir"
 for dataset_path in "${datasets[@]}"; do
     # Run the Python script with the dataset_path and output_path
     echo "Processing dataset: $dataset_path -> $output_dir"
-    python plot_labeled_results.py \
+    python ./utils/plot_labeled_results.py \
         --result_path "$dataset_path" \
         --output_dir "$output_dir"
 
@@ -46,7 +46,7 @@ for dataset_path in "${datasets[@]}"; do
 done
 
 # Plot all datasets combined
-python plot_labeled_results.py  \
+python ./utils/plot_labeled_results.py  \
     --result_path "$base_dir"  \
     --output_dir "$output_dir"
 
