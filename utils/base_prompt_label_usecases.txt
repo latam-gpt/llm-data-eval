@@ -1,0 +1,52 @@
+Instrucciones: Etiqueta el contenido proporcionado con los dominios y casos de uso relevantes a hacer fine-tuning de un modelo de lenguaje para en América Latina. Cada etiqueta debe indicar claramente el dominio y caso de uso al que pertenece cada fragmento del texto. Si el contenido no corresponde a ningún caso de uso, indícalo como "Sin coincidencia".
+
+Lista de dominios y casos de uso para etiquetar:
+
+Dominio: Salud
+- Telemedicina: Proveer consultas iniciales, verificadores de síntomas y asesoramiento médico en español y portugués.
+- Soporte para Salud Mental: Ofrecer conversaciones empáticas y orientación para problemas de salud mental no críticos.
+- Educación Médica: Asistir a estudiantes de medicina con estudios de caso y terminología.
+- Compromiso del Paciente: Explicar tratamientos, gestionar recordatorios de medicación y atender preguntas frecuentes.
+
+Dominio: Soporte al Cliente
+- E-commerce: Ayudar con pedidos, devoluciones y recomendaciones de productos adaptados a los mercados latinoamericanos.
+- Servicios Financieros: Atender consultas bancarias, procesos de préstamos y educación financiera.
+- Telecomunicaciones: Solucionar problemas con internet, servicios móviles y dispositivos.
+
+Dominio: Educación
+- Aprendizaje de Idiomas: Proveer lecciones, práctica conversacional y correcciones gramaticales en español y portugués.
+- Tutoría STEM: Ofrecer asistencia personalizada en matemáticas, ciencias y programación.
+- Educación Cultural: Compartir conocimientos sobre historia, literatura y tradiciones de América Latina.
+
+Dominio: Legal
+- Redacción de Documentos: Asistir con contratos, testamentos u otros documentos legales.
+- Asesoramiento Legal: Ofrecer orientación sobre problemas legales comunes (por ejemplo, derechos de arrendamiento, leyes laborales) dentro de límites éticos.
+- Cumplimiento Normativo: Ayudar a las empresas a comprender las leyes y requisitos locales.
+
+Dominio: Negocios y Finanzas
+- Asistencia para Startups: Apoyar en la creación de planes de negocios y preparación de presentaciones.
+- Investigación de Mercado: Generar conocimientos adaptados al comportamiento del consumidor local.
+- Contabilidad e Impuestos: Ayudar con la contabilidad y comprensión de regulaciones fiscales en América Latina.
+
+Dominio: Industrias Creativas
+- Creación de Contenido: Asistir con redacción de guiones, copias publicitarias o contenido para redes sociales adaptado a audiencias locales.
+- Traducción y Localización: Traducir contenido preservando el contexto cultural.
+- Música y Arte: Generar letras, conceptos de arte visual o escritura creativa.
+
+Dominio: Agricultura
+- Consejos Agrícolas: Proveer asesoramiento sobre rotación de cultivos, control de plagas y prácticas sostenibles.
+- Pronóstico del Clima: Ofrecer información meteorológica localizada para la planificación agrícola.
+- Precios de Mercado: Rastrear y reportar precios de cultivos y ganado en mercados regionales.
+
+Dominio: Tecnología
+- Ayuda en Programación: Depurar código o proporcionar explicaciones sobre conceptos de software.
+- Soporte Técnico: Solucionar problemas de software, hardware y redes.
+- Educación en IA: Capacitar a usuarios sobre aplicaciones de aprendizaje automático e inteligencia artificial.
+
+Formato esperado:
+DOMINIO: lista de dominios separados por comas (p. ej., "Salud, Educación, Legal").
+CASOS DE USO: lista de casos de uso separados por comas (p. ej., "Telemedicina, Soporte para Salud Mental, Educación Médica").
+
+Contenido a etiquetar:
+
+<EJEMPLO>

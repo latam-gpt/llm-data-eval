@@ -1,25 +1,23 @@
-# Automatic High Quality Data Filtering
+# Automatic High-Quality Data Filtering
 
 We have limited compute, and too much data.
 
-This repo presents a methodology that allows us to build a smaller but higher quality NLP datasets from a big corpus using LLMs.
+This repo presents a methodology that allows us to
+- Build a smaller but higher quality NLP datasets from a big corpus using LLMs.
+- Perform zero-shot labeling on datasets to ensure coverage of a distribution of domains and use cases where our datasets can effectively contribute to training LLMs tailored for Latin America.
 
 ## Index
 
-1. [Filtering data at scale](#filtering-data-at-scale)
-2. [Installation](#installation)
+1. [Installation](#installation)
+2. [Filtering data at scale](#filtering-data-at-scale)
 3. [Pipeline Overview](#pipeline-overview)
   1. [GPT-based rating](#gpt-based-rating)
   2. [Train encoder](#train-encoder)
   3. [Evaluate corpus with encoder](#evaluate-corpus-with-encoder)
 4. [Filter results](#filter-results)
-5. [References](#references)
+5. [Assessing Data Utility](#assessing-data-utility)
+6. [References](#references)
 
-## Filtering data at scale
-
-In an ideal world, we would like to inspect the quality of the samples by hand, but this is impossible given our dataset size. Another approach could be to use an LLM to filter samples given some instructions, but sadly these models are also very expensive to run at scale. Therefore, we need to develop a proxy method:
-
-First, we use an LLM to grade the educational quality of various samples from our original dataset. Then, we use this samples to train a classifier, using a encoder-based model, so that it learns to assign a score from 0 to 5. Since this model is way cheaper to use than an LLM, we can run it in scale over our entire dataset, and thus get the high quality section form it.
 
 ## Installation
 
@@ -29,6 +27,12 @@ Using conda:
 conda create -m llm-data-eval python=3.12
 conda activate llm-data-eval
 ```
+
+# Filtering data at scale
+
+In an ideal world, we would like to inspect the quality of the samples by hand, but this is impossible given our dataset size. Another approach could be to use an LLM to filter samples given some instructions, but sadly these models are also very expensive to run at scale. Therefore, we need to develop a proxy method:
+
+First, we use an LLM to grade the educational quality of various samples from our original dataset. Then, we use this samples to train a classifier, using a encoder-based model, so that it learns to assign a score from 0 to 5. Since this model is way cheaper to use than an LLM, we can run it in scale over our entire dataset, and thus get the high quality section form it.
 
 ## Pipeline Overview
 
@@ -104,6 +108,47 @@ python utils/filter_results.py \
 --output_path=path/to/store/filtered_dataset
 ```
 
-## References
+# Assessing Data Utility
+
+We aim to evaluate whether the datasets we are collecting will be useful for downstream tasks. By "utility," we mean that people should find these datasets valuable for fine-tuning models pre-trained in the context of Latin American domains and use cases.
+
+To scale this analysis, we leverage an LLM to label a subset of each dataset. This process provides a distribution of domains and use cases, helping us identify areas where we need to collect more data.
+
+## GPT-Based Labeling
+
+We use the script `label_with_llms.py` to label datasets (e.g., in `.arrow` format) using an LLM. The script employs definitions of domains and use cases provided in the prompt file `utils/base_prompt_label_usecases.txt`.
+
+### Example Usage
+
+The following command demonstrates how to label a dataset using the script:
+
+```bash
+python label_with_llms.py \
+  --prompt_path prompts/base_prompt_label_usecases.txt \
+  --dataset_path /path/to/dataset \
+  --model_path meta-llama/Meta-Llama-3.1-70B-Instruct \
+  --download_dir /path/to/download/models \
+  --output_path results/usecasesdomains_dataset.json \
+  --tensor_parallel_size 2 \
+  --batch_size 500 \
+  --text_column texto
+```
+
+To label multiple datasets efficiently, we provide a Bash script, `scripts/run_label_datasets.sh`. This script iterates over a list of dataset paths contained in a file and saves the results for each dataset.
+
+### Example Usage
+
+```bash
+bash scripts/run_label_datasets.sh \
+    -d "/path/to/dataset_paths.txt" \
+    -o "/path/to/output_dir" \
+    -m "meta-llama/Meta-Llama-3.1-70B-Instruct" \
+    -p "/path/to/base_prompt_label_usecases.txt" \
+    -c "0,1" \
+    -n 2 \
+    -l "/path/to/download/models"
+```
+
+# References
 
 - This pipeline is a custom implementation on the approach used in [FineWeb-Edu](https://huggingface.co/spaces/HuggingFaceFW/blogpost-fineweb-v1).
