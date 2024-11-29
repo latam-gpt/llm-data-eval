@@ -2,7 +2,7 @@
 
 We have limited compute, and too much data.
 
-This repo presents a methodology that allows us to 
+This repo presents a methodology that allows us to
 - Build a smaller but higher quality NLP datasets from a big corpus using LLMs.
 - Perform zero-shot labeling on datasets to ensure coverage of a distribution of domains and use cases where our datasets can effectively contribute to training LLMs tailored for Latin America.
 
