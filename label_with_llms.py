@@ -34,7 +34,9 @@ def process_batch(llm, batch, sampling_params):
     outputs = llm.generate(list(batch["eval_prompt"]), sampling_params)
     results = {}
 
-    for idx, (vllm_output, prompt) in enumerate(zip(outputs, list(batch[args.text_column]))):
+    for idx, (vllm_output, prompt) in enumerate(
+        zip(outputs, list(batch[args.text_column]))
+    ):
         generated_text = vllm_output.outputs[0].text
         match_domain = re.search(PATTERN_DOMAIN, generated_text)
         match_usecases = re.search(PATTERN_USECASE, generated_text)
