@@ -7,3 +7,4 @@ transformers
 vllm
 pre-commit
 wandb
+matplotlib
